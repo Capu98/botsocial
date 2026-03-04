@@ -327,6 +327,27 @@ nav {
   content: "✓"; color: var(--green); font-weight: 700; flex-shrink: 0;
 }
 
+/* ── GLASSMORPHISM PRICING CARDS ── */
+.pricing-card {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(12,17,32,0.7);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.pricing-card.featured {
+  background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(219,39,119,0.08));
+  border-color: rgba(124,58,237,0.35);
+  box-shadow: 0 8px 40px rgba(124,58,237,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+/* ── HERO GRADIENT ANIMATO ── */
+@keyframes heroGlow {
+  0%, 100% { background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(124,58,237,0.22) 0%, transparent 70%); }
+  50%       { background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(219,39,119,0.18) 0%, transparent 70%); }
+}
+.hero { animation: heroGlow 6s ease-in-out infinite; }
+
 /* ── FAQ ── */
 .faq-list { max-width: 720px; margin: 0 auto; }
 .faq-item {
@@ -399,7 +420,24 @@ footer strong {
   .narrative-card { padding: 28px 24px; }
   .benefit-card, .pricing-card { padding: 28px 24px; }
 }
+
+/* ── MOTION ── */
+.fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+.benefit-card:hover, .roi-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(124,58,237,0.18); transition: transform 0.25s ease, box-shadow 0.25s ease; }
+@keyframes pulse-cta { 0%, 100% { box-shadow: 0 0 0 0 rgba(124,58,237,0.5); } 50% { box-shadow: 0 0 0 10px rgba(124,58,237,0); } }
+.btn-primary.pulse { animation: pulse-cta 3s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .fade-in { opacity: 1; transform: none; transition: none; } .btn-primary.pulse { animation: none; } }
 </style>
+
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+</script>
 </head>
 <body>
 
@@ -423,7 +461,7 @@ footer strong {
     <h1>I tuoi post social,<br><span class="grad-text">ogni settimana, senza pensarci.</span></h1>
     <h2>Tu approvi in 10 minuti. Noi creiamo tutto il resto. Nessuna scadenza mancata, nessun post in ritardo.</h2>
     <div class="hero-cta">
-      <a href="call.html" class="btn btn-primary btn-lg">Prenota una call gratuita →</a>
+      <a href="call.html" class="btn btn-primary btn-lg pulse">Prenota una call gratuita →</a>
       <div class="trust">
         <span>Nessuna carta di credito</span>
         <span>Instagram · Facebook · TikTok</span>
@@ -459,7 +497,7 @@ footer strong {
 </section>
 
 <!-- PROBLEMA -->
-<section class="section" style="background:var(--bg1);">
+<section class="section fade-in" style="background:var(--bg1);">
   <div class="container">
     <div class="section-label">Il problema</div>
     <h2 class="section-title">"Non posto da 3 settimane perché non ho tempo."</h2>
@@ -475,7 +513,7 @@ footer strong {
 </section>
 
 <!-- COME FUNZIONA -->
-<section class="section" id="come-funziona">
+<section class="section fade-in" id="come-funziona">
   <div class="container">
     <div class="section-label">Come funziona</div>
     <h2 class="section-title">Funziona come mandare un messaggio su WhatsApp</h2>
@@ -507,23 +545,23 @@ footer strong {
 </section>
 
 <!-- BENEFICI -->
-<section class="section" style="background:var(--bg1);">
+<section class="section fade-in" style="background:var(--bg1);">
   <div class="container">
     <div class="section-label">Perché funziona</div>
     <h2 class="section-title">Non è Buffer o Later. È il tuo content manager.</h2>
     <div class="benefits-grid">
-      <div class="benefit-card">
-        <div class="benefit-icon">📅</div>
+      <div class="benefit-card fade-in">
+        <div class="benefit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
         <h3>Ogni lunedì, 5 post pronti da approvare</h3>
         <p>Il tuo content manager digitale prepara i contenuti della settimana e te li presenta tutti insieme. Tu li scorri, approvi quelli che ti piacciono, salti quelli che non ti convincono. Dieci minuti, poi torni al lavoro.</p>
       </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">✍️</div>
+      <div class="benefit-card fade-in">
+        <div class="benefit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
         <h3>Il tuo stile, non il suo.</h3>
         <p>BotSocial studia come comunichi — il tono, le parole, il modo di rivolgerti ai tuoi clienti — e lo replica in ogni post. Non sembrano scritti da qualcun altro. Sembrano scritti da te.</p>
       </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">🔥</div>
+      <div class="benefit-card fade-in">
+        <div class="benefit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
         <h3>Il tuo brand sui social, anche quando sei impegnato.</h3>
         <p>Su Instagram vince la costanza, non la perfezione. BotSocial garantisce che il tuo brand sia presente ogni settimana — anche nelle settimane in cui non hai un secondo libero.</p>
       </div>
@@ -532,24 +570,24 @@ footer strong {
 </section>
 
 <!-- ROI -->
-<section class="section">
+<section class="section fade-in">
   <div class="container">
     <div class="section-label">I numeri</div>
     <h2 class="section-title">Si ripaga con una sola nuova prenotazione al mese</h2>
     <div class="roi-grid">
-      <div class="roi-card">
+      <div class="roi-card fade-in">
         <div class="roi-number">70%</div>
         <div class="roi-label">delle nuove clienti di un salone arriva dai social</div>
       </div>
-      <div class="roi-card">
+      <div class="roi-card fade-in">
         <div class="roi-number">3–5</div>
         <div class="roi-label">prenotazioni in più al mese per chi posta 20+ volte</div>
       </div>
-      <div class="roi-card">
+      <div class="roi-card fade-in">
         <div class="roi-number">€300</div>
         <div class="roi-label">costa una social media manager. BotSocial parte da €69/mese</div>
       </div>
-      <div class="roi-card">
+      <div class="roi-card fade-in">
         <div class="roi-number">10 min</div>
         <div class="roi-label">di setup, una volta sola. Poi funziona in autonomia</div>
       </div>
@@ -558,7 +596,7 @@ footer strong {
 </section>
 
 <!-- PRICING -->
-<section class="section" style="background:var(--bg1);" id="prezzi">
+<section class="section fade-in" style="background:var(--bg1);" id="prezzi">
   <div class="container">
     <div class="section-label">Prezzi</div>
     <h2 class="section-title">Senza contratti, senza sorprese</h2>
@@ -566,7 +604,7 @@ footer strong {
     <div class="pricing-grid">
 
       <!-- STARTER -->
-      <div class="pricing-card">
+      <div class="pricing-card fade-in">
         <div class="pricing-plan">Starter</div>
         <div class="pricing-price">€69 <span>/mese</span></div>
         <div class="pricing-desc">Il tuo content manager digitale. Post pronti ogni settimana, tu approvi in 10 minuti.</div>
@@ -582,7 +620,7 @@ footer strong {
       </div>
 
       <!-- PRO -->
-      <div class="pricing-card featured">
+      <div class="pricing-card featured fade-in">
         <div class="pricing-featured-badge">Più scelto</div>
         <div class="pricing-plan">Pro</div>
         <div class="pricing-price">€99 <span>/mese</span></div>
@@ -600,7 +638,7 @@ footer strong {
       </div>
 
       <!-- AGENZIA -->
-      <div class="pricing-card">
+      <div class="pricing-card fade-in">
         <div class="pricing-plan">Agenzia</div>
         <div class="pricing-price" style="font-size:1.8rem;">Su misura</div>
         <div class="pricing-desc">Per agenzie e professionisti che gestiscono più clienti.</div>
@@ -619,7 +657,7 @@ footer strong {
 </section>
 
 <!-- FAQ -->
-<section class="section" id="faq">
+<section class="section fade-in" id="faq">
   <div class="container">
     <div class="section-label">Domande frequenti</div>
     <h2 class="section-title">Hai dubbi? Le risposte che cerchi.</h2>
@@ -718,6 +756,56 @@ document.querySelectorAll('.faq-item').forEach(item => {
     document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
   });
+});
+
+// Motion — Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Motion — Animated counters
+function animateCounter(el, target, suffix) {
+  let current = 0;
+  const step = target / 40;
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = (suffix === '€' ? '€' : '') + Math.round(current) + (suffix !== '€' ? suffix : '');
+    if (current >= target) clearInterval(timer);
+  }, 40);
+}
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const text = el.textContent.trim();
+      if (text === '70%') animateCounter(el, 70, '%');
+      else if (text === '€300') animateCounter(el, 300, '€');
+      else if (text === '10 min') { el.textContent = '10 min'; }
+      statsObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.roi-number').forEach(el => statsObserver.observe(el));
+</script>
+
+<script>
+// Analytics — BotSocial event tracking
+document.querySelectorAll('a[href="call.html"]').forEach(el => {
+  el.addEventListener('click', () => gtag('event', 'click_cta_call', {event_category: 'CTA'}));
+});
+document.querySelectorAll('.pricing-card').forEach(el => {
+  el.addEventListener('click', () => {
+    const plan = el.querySelector('.pricing-plan')?.textContent || 'unknown';
+    gtag('event', 'click_pricing_card', {event_category: 'Pricing', event_label: plan});
+  });
+});
+let scrollTracked = false;
+window.addEventListener('scroll', () => {
+  if (!scrollTracked && (window.scrollY / (document.body.scrollHeight - window.innerHeight)) > 0.5) {
+    scrollTracked = true;
+    gtag('event', 'scroll_50pct', {event_category: 'Engagement'});
+  }
 });
 </script>
 </body>
