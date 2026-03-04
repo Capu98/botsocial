@@ -312,30 +312,16 @@ footer a { color: var(--muted2); }
       <h2>Scegli un orario</h2>
       <p class="subtitle">Seleziona il giorno e l'ora che preferisci</p>
 
-      <!-- Calendly embed — sostituisci CALENDLY_USERNAME con il tuo username Calendly -->
+      <!-- Calendly embed: calendly.com/mentis-ai-outreach/30min -->
       <div class="calendly-wrap" id="calendly-container">
-
-        <!-- Placeholder visibile finché Calendly non è configurato -->
-        <div class="calendly-placeholder" id="calendly-placeholder">
-          <div class="cp-icon">📅</div>
-          <h3>Calendario di prenotazione</h3>
-          <p>Per attivare il calendario, segui questi 3 passi:</p>
-          <div class="setup-steps">
-            <b>1.</b> Vai su <b>calendly.com</b> e crea un account gratis<br>
-            <b>2.</b> Crea un evento "Call BotSocial 20 min"<br>
-            <b>3.</b> Apri <b>call.html</b> e sostituisci<br>
-            &nbsp;&nbsp;&nbsp;<code>CALENDLY_USERNAME</code><br>
-            &nbsp;&nbsp;&nbsp;con il tuo username Calendly
-          </div>
-        </div>
-
+        <div class="calendly-placeholder" id="calendly-placeholder"></div>
       </div>
 
       <hr class="divider">
 
       <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px;">Preferisci un altro canale?</div>
       <div class="alt-channels">
-        <!-- ISTRUZIONE: sostituisci 39XXXXXXXXXX con il numero WhatsApp BotSocial (senza +) -->
+        <!-- TODO: sostituire 39XXXXXXXXXX con il numero WhatsApp reale quando disponibile -->
         <a href="https://wa.me/39XXXXXXXXXX?text=Ciao!%20Vorrei%20prenotare%20una%20call%20gratuita%20con%20BotSocial." class="alt-btn alt-btn-wa" target="_blank">
           <span style="font-size:20px;">💬</span>
           <div>
@@ -365,25 +351,18 @@ footer a { color: var(--muted2); }
 
 <script>
 // ── Calendly embed
-// ISTRUZIONE: sostituisci CALENDLY_USERNAME con il tuo username (es. "botsocial")
-const CALENDLY_USERNAME = 'CALENDLY_USERNAME';
+const CALENDLY_URL = 'https://calendly.com/mentis-ai-outreach/30min';
 
-if (CALENDLY_USERNAME !== 'CALENDLY_USERNAME') {
-  // Rimuove placeholder e carica embed reale
-  document.getElementById('calendly-placeholder').remove();
-  document.getElementById('calendly-container').style.minHeight = '480px';
-  document.getElementById('calendly-container').style.padding = '0';
+document.getElementById('calendly-placeholder').remove();
 
-  // Carica Calendly script
-  const script = document.createElement('script');
-  script.src = 'https://assets.calendly.com/assets/external/widget.js';
-  document.head.appendChild(script);
+const script = document.createElement('script');
+script.src = 'https://assets.calendly.com/assets/external/widget.js';
+document.head.appendChild(script);
 
-  const embed = document.createElement('div');
-  embed.className = 'calendly-inline-widget';
-  embed.setAttribute('data-url', `https://calendly.com/${CALENDLY_USERNAME}/call-botsocial?hide_landing_page_details=1&hide_gdpr_banner=1&background_color=111827&text_color=e2ecf5&primary_color=7c3aed`);
-  document.getElementById('calendly-container').appendChild(embed);
-}
+const embed = document.createElement('div');
+embed.className = 'calendly-inline-widget';
+embed.setAttribute('data-url', CALENDLY_URL + '?hide_landing_page_details=1&hide_gdpr_banner=1&background_color=111827&text_color=e2ecf5&primary_color=7c3aed');
+document.getElementById('calendly-container').appendChild(embed);
 </script>
 
 </body>
