@@ -23,6 +23,8 @@
   --border: rgba(255,255,255,0.08);
   --green:  #10b981;
   --radius: 16px;
+  --white:  #e2ecf5;
+  --teal:   #2dd4bf;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -375,6 +377,21 @@ footer strong {
   background-clip: text;
 }
 
+/* ── BRAND FAMILY ── */
+.family-section { padding: 100px clamp(24px,5vw,72px); background: var(--bg2); border-top: 1px solid var(--border); }
+.family-section h2 { font-size: clamp(32px,5vw,48px); font-weight: 900; letter-spacing: -1.5px; color: var(--white); margin-bottom: 40px; }
+.family-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; max-width: 900px; }
+.fam-card { padding: 36px; border: 1.5px solid var(--border); border-radius: 20px; background: var(--bg3); transition: all .2s; }
+.fam-card:hover { border-color: var(--teal); transform: translateY(-3px); }
+.fam-card.active { border-color: var(--violet); background: var(--bg3); }
+.fam-card.active:hover { border-color: var(--violet); }
+.fam-name { font-size: 26px; font-weight: 900; margin-bottom: 10px; color: var(--white); }
+.fam-name .v { color: #9b6bff; font-style: italic; }
+.fam-name .t { color: var(--teal); font-style: italic; }
+.fam-desc { font-size: 13px; color: var(--muted2); line-height: 1.6; margin-bottom: 16px; }
+.fam-link { font-size: 12px; font-weight: 700; color: #9b6bff; display: flex; align-items: center; gap: 6px; text-decoration: none; }
+.fam-link.teal { color: var(--teal); }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
   .hero { padding: 64px 0 48px; }
@@ -664,6 +681,25 @@ footer strong {
       <span>Nessuna carta di credito</span>
       <span>Cancelli quando vuoi</span>
       <span>Setup in 10 minuti</span>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND FAMILY -->
+<section class="family-section">
+  <div class="container">
+    <h2>La famiglia Bot.</h2>
+    <div class="family-grid">
+      <div class="fam-card active">
+        <div class="fam-name">Bot<span class="v">Social</span></div>
+        <div class="fam-desc">Post Instagram e Facebook ogni settimana, gestiti dall'AI. Zero sforzo.</div>
+        <div class="fam-link">capu98.github.io/botsocial ↗</div>
+      </div>
+      <div class="fam-card">
+        <div class="fam-name">Bot<span class="t">Ready</span></div>
+        <div class="fam-desc">Risponde alle prenotazioni WhatsApp per te — 24/7, riduce i no-show.</div>
+        <a class="fam-link teal" href="https://capu98.github.io/botready" target="_blank">capu98.github.io/botready ↗</a>
+      </div>
     </div>
   </div>
 </section>
