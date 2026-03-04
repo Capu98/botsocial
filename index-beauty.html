@@ -1247,18 +1247,19 @@ footer {
     <button class="modal-close" onclick="closeModal()">✕</button>
     <h3>Inizia i tuoi 14 giorni gratis</h3>
     <p class="modal-sub">Nessuna carta richiesta. Setup in 10 minuti. Cancelli quando vuoi.</p>
-    <form onsubmit="handleSubmit(event)">
+    <form name="trial-botsocial" data-netlify="true" onsubmit="handleSubmit(event)">
+      <input type="hidden" name="form-name" value="trial-botsocial">
       <div class="form-group">
         <label class="form-label">Il tuo nome</label>
-        <input class="form-input" type="text" placeholder="Alessia" required>
+        <input class="form-input" type="text" name="nome" placeholder="Alessia" required>
       </div>
       <div class="form-group">
         <label class="form-label">Nome del salone</label>
-        <input class="form-input" type="text" placeholder="Alessia Hair Studio" required>
+        <input class="form-input" type="text" name="salone" placeholder="Alessia Hair Studio" required>
       </div>
       <div class="form-group">
         <label class="form-label">Email o numero WhatsApp</label>
-        <input class="form-input" type="text" placeholder="email@salone.it oppure 333 000 0000" required>
+        <input class="form-input" type="text" name="contatto" placeholder="email@salone.it oppure 333 000 0000" required>
       </div>
       <button type="submit" class="form-submit">Inizia gratis →</button>
     </form>
