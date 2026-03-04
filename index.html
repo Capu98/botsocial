@@ -64,7 +64,7 @@ img { max-width: 100%; display: block; }
 
 /* ── NAV ── */
 nav {
-  position: sticky; top: 0; z-index: 100;
+  position: sticky; top: 44px; z-index: 100;
   background: rgba(7,9,15,0.85);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -413,6 +413,52 @@ footer strong {
 .fam-link { font-size: 12px; font-weight: 700; color: #9b6bff; display: flex; align-items: center; gap: 6px; text-decoration: none; }
 .fam-link.teal { color: var(--teal); }
 
+/* ── COMING SOON BAR ── */
+.cs-bar {
+  background: var(--grad);
+  color: #fff;
+  text-align: center;
+  padding: 11px 24px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 102;
+}
+.cs-bar strong { font-weight: 800; letter-spacing: 0.03em; }
+.cs-bar a {
+  color: #fff;
+  font-weight: 700;
+  padding: 3px 14px;
+  border: 1.5px solid rgba(255,255,255,0.75);
+  border-radius: 100px;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.cs-bar a:hover { background: rgba(255,255,255,0.18); }
+
+.cs-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: rgba(16,185,129,0.12);
+  color: #10b981;
+  border: 1px solid rgba(16,185,129,0.35);
+  margin-bottom: 12px;
+}
+.cs-hero-badge::before { content: "🔜"; font-size: 14px; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
   .hero { padding: 64px 0 48px; }
@@ -441,6 +487,12 @@ footer strong {
 </head>
 <body>
 
+<!-- COMING SOON BAR -->
+<div class="cs-bar">
+  <span>🔜 <strong>Coming Soon</strong> — BotSocial sarà live presto. Il prodotto è in fase finale.</span>
+  <a href="contatto.html">Entra in lista d'attesa →</a>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="container nav-inner">
@@ -457,6 +509,7 @@ footer strong {
 <!-- HERO -->
 <section class="hero">
   <div class="container">
+    <div class="cs-hero-badge">Coming Soon</div>
     <div class="badge">Il tuo content manager digitale</div>
     <h1>I tuoi post social,<br><span class="grad-text">ogni settimana, senza pensarci.</span></h1>
     <h2>Tu approvi in 10 minuti. Noi creiamo tutto il resto. Nessuna scadenza mancata, nessun post in ritardo.</h2>
