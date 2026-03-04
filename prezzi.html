@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prezzi — BotSocial</title>
+<meta name="description" content="Piano Base €200/mese o Piano Pro €300/mese. Social media AI per ristoranti. Nessun contratto, risultati dal primo mese.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:   #F5F2EB;
+  --white:   #FEFEFE;
+  --ink:     #0A0A0A;
+  --violet:  #6D28D9;
+  --violet2: #5B21B6;
+  --pink:    #DB2777;
+  --muted:   #71717A;
+  --border:  #E4E0D8;
+  --bg-base: #F5F2EB;
+
+  /* morphing bg vars — changed by JS */
+  --morph-1: #F5F2EB;
+  --morph-2: #F5F2EB;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-base);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+  transition: background .8s cubic-bezier(.4,0,.2,1);
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── MORPHING BG LAYER ── */
+.bg-morph {
+  position: fixed; inset: 0; z-index: -1;
+  background: radial-gradient(ellipse 80% 60% at 20% 30%, var(--morph-1), transparent 60%),
+              radial-gradient(ellipse 60% 70% at 80% 70%, var(--morph-2), transparent 60%),
+              var(--cream);
+  transition: background 1s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor {
+  width: 10px; height: 10px;
+  background: var(--violet); border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .2s, height .2s, background .3s, opacity .2s;
+  mix-blend-mode: multiply;
+}
+#cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(109,40,217,.3);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform .1s linear, width .3s, height .3s, border-color .3s;
+}
+body.cursor-hover #cursor { width: 44px; height: 44px; opacity: .15; }
+body.cursor-hover #cursor-ring { width: 44px; height: 44px; border-color: var(--violet); }
+
+/* ── PROGRESS BAR ── */
+#progress {
+  position: fixed; top: 0; left: 0; height: 3px; z-index: 2000;
+  background: linear-gradient(90deg, var(--violet), var(--pink));
+  width: 0%; transition: width .1s linear;
+}
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 0 clamp(24px,5vw,72px);
+  height: 68px; display: flex; align-items: center;
+  justify-content: space-between;
+}
+.nav.scrolled {
+  background: rgba(245,242,235,.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 900; color: var(--ink);
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo em { font-style: italic; color: var(--violet); }
+.nav-back {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: var(--muted);
+  transition: color .2s;
+}
+.nav-back svg { transition: transform .2s; }
+.nav-back:hover { color: var(--violet); }
+.nav-back:hover svg { transform: translateX(-4px); }
+.nav-cta {
+  background: var(--ink); color: var(--white);
+  font-size: 13px; font-weight: 700; letter-spacing: .3px;
+  padding: 10px 24px; border-radius: 100px; border: none; cursor: none;
+  transition: background .2s, transform .2s;
+}
+.nav-cta:hover { background: var(--violet); transform: translateY(-1px); }
+
+/* ── HERO PRICING ── */
+.ph {
+  min-height: 50vh;
+  padding: 140px clamp(24px,5vw,72px) 60px;
+  display: flex; flex-direction: column;
+  align-items: flex-start; justify-content: flex-end;
+  position: relative;
+}
+.ph-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--violet);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.ph-eyebrow::before {
+  content: ''; width: 32px; height: 2px; background: var(--violet);
+}
+.ph-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(44px, 7vw, 96px);
+  font-weight: 900; line-height: 1.0; letter-spacing: -2px;
+  margin-bottom: 24px;
+}
+.ph-title em { font-style: italic; color: var(--violet); }
+.ph-title .outline {
+  -webkit-text-stroke: 2px var(--ink);
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.ph-sub {
+  font-size: 16px; color: var(--muted);
+  max-width: 440px; line-height: 1.7;
+}
+
+/* ── DIVIDER ── */
+.section-divider {
+  width: 100%; height: 1px;
+  background: var(--border);
+  margin: 0 clamp(24px,5vw,72px);
+  width: calc(100% - clamp(48px,10vw,144px));
+}
+
+/* ── PLAN CARDS ── */
+.plans {
+  padding: 60px clamp(24px,5vw,72px) 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.plan-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 48px 44px 44px;
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+  transition: border-color .3s, box-shadow .4s, transform .3s;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.plan-card:hover {
+  border-color: var(--violet);
+  box-shadow: 0 32px 64px rgba(109,40,217,.12);
+}
+.plan-card.featured {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.plan-card.featured * { color: var(--white) !important; }
+.plan-card.featured .plan-feat-item svg circle { stroke: rgba(255,255,255,.2); }
+.plan-card.featured .plan-feat-item svg path { stroke: #A78BFA; }
+.plan-card.featured .plan-badge { background: var(--violet); }
+.plan-card.featured .plan-cta { background: var(--white); color: var(--ink) !important; }
+.plan-card.featured .plan-cta:hover { background: #e8e4ff; }
+.plan-card.featured:hover { box-shadow: 0 40px 80px rgba(0,0,0,.3); }
+
+.plan-badge {
+  display: inline-block;
+  background: var(--violet);
+  color: var(--white) !important;
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 16px; border-radius: 100px;
+  margin-bottom: 32px;
+}
+.plan-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; font-weight: 900;
+  margin-bottom: 8px;
+}
+.plan-price-row {
+  display: flex; align-items: baseline; gap: 6px;
+  margin-bottom: 6px;
+}
+.plan-price {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(56px,6vw,80px);
+  font-weight: 900; line-height: 1;
+  letter-spacing: -3px;
+}
+.plan-price-sym { font-size: 28px; font-weight: 700; align-self: flex-start; padding-top: 12px; }
+.plan-per { font-size: 14px; color: var(--muted); margin-bottom: 36px; font-weight: 400; }
+.plan-card.featured .plan-per { color: rgba(255,255,255,.5) !important; }
+
+/* SVG check list */
+.plan-feats { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 44px; }
+.plan-feat-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 14px; font-weight: 500; line-height: 1.4;
+}
+.plan-feat-item svg {
+  width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px;
+}
+.check-circle { stroke: #E4E0D8; stroke-width: 1.5; fill: none; }
+.check-tick {
+  stroke: var(--violet); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+  fill: none;
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  transition: stroke-dashoffset .5s ease;
+}
+.plan-card.visible .check-tick { stroke-dashoffset: 0; }
+.plan-card.featured .check-tick { stroke: #A78BFA; }
+
+.plan-off .check-circle { stroke: #E4E0D8; }
+.plan-off .check-tick { stroke: transparent; }
+.plan-off span { color: #A1A1AA; text-decoration: line-through; font-weight: 400; }
+.plan-card.featured .plan-off span { color: rgba(255,255,255,.3) !important; text-decoration: line-through; }
+
+.plan-cta {
+  display: block; width: 100%; text-align: center;
+  background: var(--ink); color: var(--white) !important;
+  font-size: 14px; font-weight: 700; letter-spacing: .3px;
+  padding: 16px 32px; border-radius: 100px; border: none; cursor: none;
+  transition: background .2s, transform .2s;
+}
+.plan-cta:hover { background: var(--violet) !important; transform: translateY(-2px); }
+
+.plan-note {
+  text-align: center; margin-top: 16px;
+  font-size: 12px; color: var(--muted); font-weight: 400;
+}
+.plan-card.featured .plan-note { color: rgba(255,255,255,.4) !important; }
+
+/* ── ROI CALCULATOR ── */
+.roi-section {
+  padding: 80px clamp(24px,5vw,72px) 100px;
+  max-width: 860px; margin: 0 auto;
+}
+.roi-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px,3.5vw,42px);
+  font-weight: 900; letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+.roi-section h2 em { font-style: italic; color: var(--violet); }
+.roi-section > p { font-size: 15px; color: var(--muted); margin-bottom: 48px; }
+
+.roi-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 44px;
+}
+.roi-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 32px; align-items: start; margin-bottom: 36px;
+}
+.roi-slider-wrap label {
+  display: block; font-size: 13px; font-weight: 600;
+  letter-spacing: .3px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 16px;
+}
+.roi-slider-wrap label span {
+  color: var(--ink); font-size: 22px; font-weight: 800;
+  font-family: 'Playfair Display', serif; text-transform: none; letter-spacing: 0;
+}
+input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 4px;
+  background: var(--border); border-radius: 2px; outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--violet); cursor: none;
+  border: 3px solid var(--white);
+  box-shadow: 0 2px 8px rgba(109,40,217,.3);
+}
+
+.roi-output {
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+}
+.roi-stat-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.roi-stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px; font-weight: 900;
+  letter-spacing: -1px; color: var(--ink);
+  transition: color .3s;
+}
+.roi-stat-value.violet { color: var(--violet); }
+.roi-stat-desc {
+  font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.4;
+}
+
+/* ── COMPARE TABLE ── */
+.compare-section {
+  padding: 80px clamp(24px,5vw,72px) 100px;
+  background: var(--ink);
+}
+.compare-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px,3.5vw,42px); font-weight: 900;
+  color: var(--white); letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+.compare-section h2 em { font-style: italic; color: #A78BFA; }
+.compare-section > p { font-size: 15px; color: rgba(255,255,255,.4); margin-bottom: 56px; }
+
+.compare-table {
+  width: 100%; border-collapse: collapse;
+  border-radius: 16px; overflow: hidden;
+}
+.compare-table thead th {
+  text-align: left; padding: 20px 28px;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 900; color: var(--white);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.compare-table thead th:first-child { color: rgba(255,255,255,.3); font-size: 13px; font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 1px; }
+.compare-table thead th.col-pro { color: #A78BFA; }
+
+.compare-table tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  transition: background .2s;
+}
+.compare-table tbody tr:hover { background: rgba(255,255,255,.03); }
+.compare-table tbody td {
+  padding: 16px 28px; font-size: 14px; color: rgba(255,255,255,.65);
+}
+.compare-table tbody td:first-child { color: rgba(255,255,255,.4); font-size: 13px; }
+
+.ct-yes { color: #6EE7B7 !important; font-weight: 600; }
+.ct-no  { color: rgba(255,255,255,.2) !important; }
+.ct-partial { color: #FCD34D !important; font-weight: 500; }
+
+/* ── FAQ ── */
+.faq-pricing {
+  padding: 80px clamp(24px,5vw,72px) 60px;
+  max-width: 760px; margin: 0 auto;
+}
+.faq-pricing h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px,3.5vw,42px); font-weight: 900; letter-spacing: -1px;
+  margin-bottom: 48px;
+}
+.faq-pricing h2 em { font-style: italic; color: var(--violet); }
+.faq-item-p {
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+}
+.faq-q-p {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 0; cursor: none;
+  font-size: 15px; font-weight: 600; gap: 20px;
+  transition: color .2s;
+}
+.faq-q-p:hover { color: var(--violet); }
+.faq-icon-p {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 16px; font-weight: 300;
+  transition: all .3s; color: var(--muted);
+}
+.faq-item-p.open .faq-icon-p {
+  background: var(--violet); border-color: var(--violet);
+  color: var(--white); transform: rotate(45deg);
+}
+.faq-a-p {
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s cubic-bezier(.4,0,.2,1);
+}
+.faq-a-p-inner {
+  font-size: 14px; color: var(--muted); line-height: 1.75;
+  padding-bottom: 24px;
+}
+
+/* ── FINAL CTA ── */
+.final-cta {
+  background: var(--violet);
+  padding: 100px clamp(24px,5vw,72px);
+  text-align: center; position: relative; overflow: hidden;
+}
+.final-cta-bg {
+  position: absolute; inset: 0;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(80px,15vw,200px); font-weight: 900; font-style: italic;
+  color: rgba(255,255,255,.04); white-space: nowrap;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none; letter-spacing: -4px;
+  user-select: none;
+}
+.final-cta h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px,4vw,56px); font-weight: 900;
+  color: var(--white); letter-spacing: -1.5px;
+  margin-bottom: 16px; position: relative; z-index: 1;
+}
+.final-cta p {
+  font-size: 16px; color: rgba(255,255,255,.7);
+  margin-bottom: 40px; position: relative; z-index: 1;
+}
+.btn-white {
+  background: var(--white); color: var(--violet);
+  font-size: 14px; font-weight: 800; padding: 18px 44px;
+  border-radius: 100px; border: none; cursor: none;
+  transition: transform .2s, box-shadow .2s;
+  display: inline-flex; align-items: center; gap: 10px;
+  position: relative; z-index: 1;
+}
+.btn-white:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0,0,0,.25); }
+
+/* ── FOOTER ── */
+.footer-p {
+  padding: 40px clamp(24px,5vw,72px);
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--border); flex-wrap: wrap; gap: 16px;
+}
+.footer-p-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 900; color: var(--ink);
+}
+.footer-p-logo em { font-style: italic; color: var(--violet); }
+.footer-p-links { display: flex; gap: 28px; }
+.footer-p-links a {
+  font-size: 13px; color: var(--muted); font-weight: 500;
+  transition: color .2s;
+}
+.footer-p-links a:hover { color: var(--violet); }
+
+/* ── MOBILE ── */
+@media (max-width: 760px) {
+  .plans { grid-template-columns: 1fr; }
+  .roi-row { grid-template-columns: 1fr; }
+  .roi-output { grid-template-columns: 1fr 1fr; }
+  .compare-table thead th:nth-child(2) { display: none; }
+  .compare-table tbody td:nth-child(2) { display: none; }
+  .final-cta { padding: 80px 24px; }
+  .nav-back span { display: none; }
+}
+@media (max-width: 480px) {
+  .roi-output { grid-template-columns: 1fr; }
+  .compare-table { display: none; }
+  .compare-mobile { display: block !important; }
+}
+.compare-mobile {
+  display: none;
+  background: rgba(255,255,255,.05);
+  border-radius: 16px; padding: 32px 24px;
+  margin-top: 24px;
+}
+.compare-mobile p { font-size: 13px; color: rgba(255,255,255,.5); margin-bottom: 8px; }
+.compare-mobile strong { color: var(--white); }
+</style>
+</head>
+<body>
+
+<div class="bg-morph" id="bgMorph"></div>
+<div id="progress"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-back" aria-label="Torna alla home">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M11 14L6 9l5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Torna alla home</span>
+  </a>
+  <a href="index.html" class="nav-logo">Bot<em>Social</em></a>
+  <button class="nav-cta" onclick="document.getElementById('cta-modal').style.display='flex'">Inizia ora</button>
+</nav>
+
+<!-- HERO -->
+<section class="ph">
+  <div class="ph-eyebrow">Piani e prezzi</div>
+  <h1 class="ph-title">
+    Scegli il<br>tuo <em>piano.</em><br>Cambia quando<br>vuoi.
+  </h1>
+  <p class="ph-sub">Nessun contratto, nessuna sorpresa. Paghi mese per mese e disdici con un messaggio.</p>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PLAN CARDS -->
+<section class="plans" id="plans-section">
+
+  <!-- BASE -->
+  <div class="plan-card" id="card-base"
+       onmouseenter="morphBg('base')" onmouseleave="morphBg('none')">
+    <div class="plan-badge">Piano Base</div>
+    <div class="plan-label">Social Starter</div>
+    <div class="plan-price-row">
+      <span class="plan-price-sym">€</span>
+      <span class="plan-price">200</span>
+    </div>
+    <div class="plan-per">/mese · IVA inclusa · nessun contratto</div>
+    <ul class="plan-feats">
+      <li class="plan-feat-item">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>10 post professionali al mese</span>
+      </li>
+      <li class="plan-feat-item">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>Instagram + Facebook</span>
+      </li>
+      <li class="plan-feat-item">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>Caption, hashtag, calendario settimanale</span>
+      </li>
+      <li class="plan-feat-item">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>Report mensile andamento</span>
+      </li>
+      <li class="plan-feat-item">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>Supporto via WhatsApp</span>
+      </li>
+      <li class="plan-feat-item plan-off">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>Stories (10/mese)</span>
+      </li>
+      <li class="plan-feat-item plan-off">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>Gestione commenti e DM</span>
+      </li>
+    </ul>
+    <a href="#" class="plan-cta" onclick="event.preventDefault();openModal('base')">Attiva il Piano Base</a>
+    <p class="plan-note">Setup gratuito · Primo post entro 48h</p>
+  </div>
+
+  <!-- PRO -->
+  <div class="plan-card featured" id="card-pro"
+       onmouseenter="morphBg('pro')" onmouseleave="morphBg('none')">
+    <div class="plan-badge" style="background:linear-gradient(90deg,#7C3AED,#DB2777)">★ Piano Pro</div>
+    <div class="plan-label">Social Full</div>
+    <div class="plan-price-row">
+      <span class="plan-price-sym">€</span>
+      <span class="plan-price">300</span>
+    </div>
+    <div class="plan-per">/mese · IVA inclusa · nessun contratto</div>
+    <ul class="plan-feats">
+      <li class="plan-feat-item">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>20 post al mese (ogni giorno feriale)</span>
+      </li>
+      <li class="plan-feat-item">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>10 Stories creative al mese</span>
+      </li>
+      <li class="plan-feat-item">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>Instagram + Facebook + TikTok</span>
+      </li>
+      <li class="plan-feat-item">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>Gestione commenti e DM</span>
+      </li>
+      <li class="plan-feat-item">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>Report settimanale + call mensile</span>
+      </li>
+      <li class="plan-feat-item">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>Mini campagna stagionale inclusa</span>
+      </li>
+      <li class="plan-feat-item">
+        <svg viewBox="0 0 22 22"><circle class="check-circle" cx="11" cy="11" r="9"/><path class="check-tick" d="M7 11.5l3 3 5-5.5"/></svg>
+        <span>Priorità supporto (risposta &lt; 4h)</span>
+      </li>
+    </ul>
+    <a href="#" class="plan-cta" onclick="event.preventDefault();openModal('pro')">Attiva il Piano Pro</a>
+    <p class="plan-note">Setup gratuito · Primo post entro 48h</p>
+  </div>
+</section>
+
+<!-- ROI CALCULATOR -->
+<section class="roi-section">
+  <h2>Quanto vale per il tuo<br><em>ristorante?</em></h2>
+  <p>Sposta i cursori — calcoliamo la crescita stimata per te.</p>
+  <div class="roi-card">
+    <div class="roi-row">
+      <div class="roi-slider-wrap">
+        <label>Coperti a settimana: <span id="coperti-val">80</span></label>
+        <input type="range" min="20" max="400" value="80" step="10" id="coperti-slider">
+      </div>
+      <div class="roi-slider-wrap">
+        <label>Piano selezionato: <span id="piano-val">Base</span></label>
+        <input type="range" min="1" max="2" value="1" step="1" id="piano-slider">
+      </div>
+    </div>
+    <div class="roi-output">
+      <div>
+        <div class="roi-stat-label">Persone raggiunte</div>
+        <div class="roi-stat-value violet" id="roi-reach">2.400</div>
+        <div class="roi-stat-desc">ogni mese, stima conservativa</div>
+      </div>
+      <div>
+        <div class="roi-stat-label">Nuovi follower</div>
+        <div class="roi-stat-value violet" id="roi-followers">+200</div>
+        <div class="roi-stat-desc">crescita mensile attesa</div>
+      </div>
+      <div>
+        <div class="roi-stat-label">Tavoli extra stimati</div>
+        <div class="roi-stat-value violet" id="roi-tables">+4</div>
+        <div class="roi-stat-desc">prenotazioni da social (mese)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE TABLE -->
+<section class="compare-section">
+  <h2>Tutto a confronto,<br><em>riga per riga.</em></h2>
+  <p>Cosa include esattamente ogni piano.</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Funzionalità</th>
+        <th>Piano Base · €200</th>
+        <th class="col-pro">Piano Pro · €300</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Post al mese</td><td>10 post</td><td class="ct-yes">20 post</td></tr>
+      <tr><td>Stories al mese</td><td class="ct-no">—</td><td class="ct-yes">10 stories</td></tr>
+      <tr><td>Piattaforme</td><td>Instagram + Facebook</td><td class="ct-yes">+ TikTok incluso</td></tr>
+      <tr><td>Gestione DM e commenti</td><td class="ct-no">—</td><td class="ct-yes">Inclusa</td></tr>
+      <tr><td>Report andamento</td><td class="ct-partial">Mensile</td><td class="ct-yes">Settimanale</td></tr>
+      <tr><td>Call di allineamento</td><td class="ct-no">—</td><td class="ct-yes">1/mese</td></tr>
+      <tr><td>Campagna stagionale</td><td class="ct-no">—</td><td class="ct-yes">1 inclusa</td></tr>
+      <tr><td>Priorità supporto</td><td class="ct-partial">Standard</td><td class="ct-yes">&lt; 4 ore</td></tr>
+      <tr><td>Setup iniziale</td><td class="ct-yes">Gratuito</td><td class="ct-yes">Gratuito</td></tr>
+      <tr><td>Contratto minimo</td><td class="ct-yes">Nessuno</td><td class="ct-yes">Nessuno</td></tr>
+      <tr><td>Disdetta</td><td class="ct-yes">Un messaggio</td><td class="ct-yes">Un messaggio</td></tr>
+    </tbody>
+  </table>
+
+  <div class="compare-mobile">
+    <p><strong style="color:white;font-size:15px">Piano Base €200/mese</strong> — 10 post, Instagram+Facebook, report mensile.</p>
+    <p style="margin-top:16px"><strong style="color:#A78BFA;font-size:15px">Piano Pro €300/mese</strong> — 20 post + 10 stories, Instagram+Facebook+TikTok, gestione DM, report settimanale, call mensile, campagna stagionale, supporto prioritario.</p>
+    <p style="margin-top:16px;color:rgba(255,255,255,.4)">Entrambi: setup gratuito, nessun contratto, disdici con un messaggio.</p>
+  </div>
+</section>
+
+<!-- FAQ PREZZI -->
+<section class="faq-pricing">
+  <h2>Domande sui <em>prezzi.</em></h2>
+  <div class="faq-item-p">
+    <div class="faq-q-p" onclick="toggleFaqP(this)">
+      Posso passare da Base a Pro in un secondo momento?
+      <div class="faq-icon-p">+</div>
+    </div>
+    <div class="faq-a-p"><div class="faq-a-p-inner">Sì, sempre. Basta dirci con un messaggio e attiviamo il nuovo piano dal mese successivo. Non ci sono penali né costi di upgrade.</div></div>
+  </div>
+  <div class="faq-item-p">
+    <div class="faq-q-p" onclick="toggleFaqP(this)">
+      Quanto dura il contratto minimo?
+      <div class="faq-icon-p">+</div>
+    </div>
+    <div class="faq-a-p"><div class="faq-a-p-inner">Zero mesi. Lavoriamo mese per mese. Se il primo mese non ti convince, non rinnovi — nessuna domanda, nessun costo aggiuntivo.</div></div>
+  </div>
+  <div class="faq-item-p">
+    <div class="faq-q-p" onclick="toggleFaqP(this)">
+      Il prezzo include l'IVA?
+      <div class="faq-icon-p">+</div>
+    </div>
+    <div class="faq-a-p"><div class="faq-a-p-inner">Sì. €200 e €300 sono prezzi finali IVA inclusa. Nessuna sorpresa in fattura.</div></div>
+  </div>
+  <div class="faq-item-p">
+    <div class="faq-q-p" onclick="toggleFaqP(this)">
+      Come avviene il pagamento?
+      <div class="faq-icon-p">+</div>
+    </div>
+    <div class="faq-a-p"><div class="faq-a-p-inner">Bonifico o PayPal all'inizio di ogni mese. Al primo mese paghi dopo i primi 7 giorni, così puoi vedere il lavoro prima di spendere.</div></div>
+  </div>
+  <div class="faq-item-p">
+    <div class="faq-q-p" onclick="toggleFaqP(this)">
+      Cosa succede se non sono soddisfatto?
+      <div class="faq-icon-p">+</div>
+    </div>
+    <div class="faq-a-p"><div class="faq-a-p-inner">Ci dici cosa non va e lo correggiamo subito. Se non riusciamo a risolvere entro 7 giorni, non rinnovi il mese successivo — punto. Nessun reclamo formale, nessuna burocrazia.</div></div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="final-cta-bg">BotSocial</div>
+  <h2>Pronto a partire?</h2>
+  <p>Il primo post esce entro 48 ore dal setup. Senza contratti.</p>
+  <button class="btn-white" onclick="openModal('pro')">
+    Scegli il piano
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M4 9h10M9 4l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-p">
+  <div class="footer-p-logo">Bot<em>Social</em></div>
+  <nav class="footer-p-links">
+    <a href="index.html">Home</a>
+    <a href="mailto:mentis.ai.outreach@gmail.com">Contatti</a>
+  </nav>
+  <p style="font-size:12px;color:var(--muted)">© 2025 BotSocial · Mentis Digital</p>
+</footer>
+
+<!-- MODAL (riuso struttura) -->
+<div id="cta-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:24px">
+  <div style="background:#fff;border-radius:20px;padding:40px clamp(24px,4vw,48px);max-width:460px;width:100%;position:relative;">
+    <button onclick="document.getElementById('cta-modal').style.display='none'" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#71717A">✕</button>
+    <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;margin-bottom:8px">Inizia <em style="font-style:italic;color:#6D28D9">gratis.</em></div>
+    <p style="font-size:14px;color:#71717A;margin-bottom:28px">Ti contatteremo entro 2 ore per il setup.</p>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <input id="mf-nome" type="text" placeholder="Il tuo nome" style="border:1.5px solid #E4E0D8;border-radius:10px;padding:14px 16px;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='#6D28D9'" onblur="this.style.borderColor='#E4E0D8'">
+      <input id="mf-wa" type="tel" placeholder="WhatsApp (es. 333 1234567)" style="border:1.5px solid #E4E0D8;border-radius:10px;padding:14px 16px;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='#6D28D9'" onblur="this.style.borderColor='#E4E0D8'">
+      <input id="mf-rist" type="text" placeholder="Nome del ristorante" style="border:1.5px solid #E4E0D8;border-radius:10px;padding:14px 16px;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='#6D28D9'" onblur="this.style.borderColor='#E4E0D8'">
+      <select id="mf-piano-sel" style="border:1.5px solid #E4E0D8;border-radius:10px;padding:14px 16px;font-size:14px;font-family:'Inter',sans-serif;outline:none;background:#fff;transition:border-color .2s">
+        <option value="base">Piano Base — €200/mese</option>
+        <option value="pro">Piano Pro — €300/mese</option>
+        <option value="nso">Non so ancora</option>
+      </select>
+      <button id="mf-submit" onclick="submitModal()" style="background:#0A0A0A;color:#fff;border:none;border-radius:100px;padding:16px 32px;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;margin-top:4px">Mandami un messaggio →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── CURSOR ── */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=Math.round(rx)+'px';ring.style.top=Math.round(ry)+'px';requestAnimationFrame(animRing);})();
+document.querySelectorAll('a,button,input,select,[onclick]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+});
+
+/* ── SCROLL PROGRESS ── */
+window.addEventListener('scroll',()=>{
+  const p=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
+  document.getElementById('progress').style.width=p+'%';
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);
+});
+
+/* ── BG MORPHING ── */
+const morph = document.getElementById('bgMorph');
+const morphMap = {
+  none: ['#F5F2EB','#F5F2EB'],
+  base: ['#EDE9FE','#F5F2EB'],
+  pro:  ['#7C3AED22','#DB277722'],
+};
+function morphBg(plan){
+  const [c1,c2]=morphMap[plan]||morphMap.none;
+  morph.style.background=`radial-gradient(ellipse 80% 60% at 20% 30%, ${c1}, transparent 60%), radial-gradient(ellipse 60% 70% at 80% 70%, ${c2}, transparent 60%), #F5F2EB`;
+}
+
+/* ── SVG CHECKMARKS on scroll ── */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.15});
+document.querySelectorAll('.plan-card').forEach(c=>observer.observe(c));
+
+/* ── ROI CALCULATOR ── */
+const cSlider = document.getElementById('coperti-slider');
+const pSlider = document.getElementById('piano-slider');
+function calcRoi(){
+  const coperti = parseInt(cSlider.value);
+  const isPro = parseInt(pSlider.value)===2;
+  document.getElementById('coperti-val').textContent = coperti;
+  document.getElementById('piano-val').textContent = isPro ? 'Pro' : 'Base';
+  const posts = isPro ? 20 : 10;
+  const reach = Math.round(posts * (coperti * 1.4 + 80) / 10) * 10;
+  const followers = Math.round(reach * 0.09);
+  const tables = Math.max(1, Math.round(reach * 0.0017));
+  document.getElementById('roi-reach').textContent = reach.toLocaleString('it-IT');
+  document.getElementById('roi-followers').textContent = '+'+followers;
+  document.getElementById('roi-tables').textContent = '+'+tables;
+}
+cSlider.addEventListener('input',calcRoi);
+pSlider.addEventListener('input',calcRoi);
+calcRoi();
+
+/* ── FAQ ── */
+function toggleFaqP(btn){
+  const item = btn.parentElement;
+  const a = item.querySelector('.faq-a-p');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item-p.open').forEach(i=>{
+    i.classList.remove('open');
+    i.querySelector('.faq-a-p').style.maxHeight='0';
+  });
+  if(!isOpen){
+    item.classList.add('open');
+    a.style.maxHeight = a.scrollHeight+'px';
+  }
+}
+
+/* ── MODAL ── */
+function openModal(plan){
+  const sel = document.getElementById('mf-piano-sel');
+  if(plan==='base') sel.value='base';
+  else if(plan==='pro') sel.value='pro';
+  document.getElementById('cta-modal').style.display='flex';
+}
+function submitModal(){
+  const nome = document.getElementById('mf-nome').value.trim();
+  const wa   = document.getElementById('mf-wa').value.trim();
+  const rist = document.getElementById('mf-rist').value.trim();
+  const piano = document.getElementById('mf-piano-sel').value;
+  if(!nome||!wa){alert('Inserisci nome e WhatsApp per continuare.');return;}
+  const pianoLabel = piano==='base'?'Piano Base €200':piano==='pro'?'Piano Pro €300':'Indeciso';
+  const msg=`Ciao! Sono ${nome}, ho il ristorante "${rist||'—'}" e sono interessato al ${pianoLabel} di BotSocial. Il mio WhatsApp è ${wa}.`;
+  const waUrl=`https://wa.me/393XXXXXXXXX?text=${encodeURIComponent(msg)}`;
+  window.open(waUrl,'_blank');
+  document.getElementById('cta-modal').style.display='none';
+}
+// close modal on outside click
+document.getElementById('cta-modal').addEventListener('click',function(e){
+  if(e.target===this) this.style.display='none';
+});
+</script>
+</body>
+</html>
