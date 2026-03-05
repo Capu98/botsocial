@@ -175,6 +175,8 @@ img { max-width: 100%; }
 .hero-visual {
   display: flex; justify-content: center; align-items: center;
   position: relative;
+  padding-left: 130px; padding-right: 120px;
+  overflow: visible;
 }
 
 .phone-wrap {
@@ -827,9 +829,45 @@ footer {
   font-size: 12px; color: var(--muted);
 }
 
+/* ── COMING SOON BAR ── */
+.cs-bar {
+  background: var(--grad);
+  color: #fff;
+  text-align: center;
+  padding: 11px 24px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.cs-bar strong { font-weight: 800; letter-spacing: 0.03em; }
+.cs-bar a {
+  color: #fff;
+  font-weight: 700;
+  padding: 3px 14px;
+  border: 1.5px solid rgba(255,255,255,0.75);
+  border-radius: 100px;
+  white-space: nowrap;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+.cs-bar a:hover { background: rgba(255,255,255,0.18); }
+
 </style>
 </head>
 <body>
+
+<!-- ══════════ COMING SOON BAR ══════════ -->
+<div class="cs-bar">
+  <span>🔜 <strong>Coming Soon</strong> — BotSocial sarà live presto. Il prodotto è in fase finale.</span>
+  <a href="#waitlist-bottom">Entra in lista d'attesa →</a>
+</div>
 
 <!-- ══════════ NAV ══════════ -->
 <nav class="nav">
@@ -1269,7 +1307,7 @@ footer {
       <li><a href="#">Termini</a></li>
     </ul>
   </div>
-  <div class="footer-copy">© 2026 BotSocial — Un prodotto Mentis Digital. Tutti i diritti riservati.</div>
+  <div class="footer-copy">© 2026 BotSocial — Un prodotto <a href="https://capu98.github.io/mentis-digital/" target="_blank" style="color:var(--purple);text-decoration:none;font-weight:600">Mentis Digital</a>. Tutti i diritti riservati.</div>
 </footer>
 
 <!-- ══════════ MODAL ══════════ -->
