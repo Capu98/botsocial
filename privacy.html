@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — BotSocial</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root {
+  --bg: #07090f; --bg2: #0d0a14; --border: #1e1630;
+  --pink: #e040a0; --purple: #9b5de5; --grad: linear-gradient(135deg, #9b5de5, #e040a0);
+  --text: #f0e8f5; --muted: #7a6090; --white: #ffffff;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.7; }
+
+/* Nav */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(7,9,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+.nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; }
+.nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.15rem; color: var(--white); text-decoration: none; }
+.nav-logo-icon { width: 32px; height: 32px; border-radius: 10px; background: var(--grad); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.nav-back { color: var(--muted); text-decoration: none; font-size: 0.88rem; font-weight: 600; transition: color 0.2s; }
+.nav-back:hover { color: var(--pink); }
+
+/* Content */
+.legal { max-width: 780px; margin: 0 auto; padding: 120px 24px 80px; }
+.legal h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.legal .updated { font-size: 0.82rem; color: var(--muted); margin-bottom: 40px; }
+.legal h2 { font-size: 1.15rem; font-weight: 700; color: var(--white); margin-top: 36px; margin-bottom: 12px; }
+.legal p, .legal li { font-size: 0.92rem; color: #c0b0d0; line-height: 1.8; }
+.legal p { margin-bottom: 14px; }
+.legal ul { padding-left: 20px; margin-bottom: 14px; }
+.legal li { margin-bottom: 6px; }
+.legal a { color: var(--pink); text-decoration: none; }
+.legal a:hover { text-decoration: underline; }
+.legal .highlight { background: rgba(155,93,229,0.1); border: 1px solid rgba(155,93,229,0.2); border-radius: 10px; padding: 16px 20px; margin: 20px 0; }
+
+/* Footer */
+footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; }
+.footer-copy { font-size: 0.78rem; color: var(--muted); }
+.footer-copy a { color: var(--purple); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">📱</div>
+      BotSocial
+    </a>
+    <a href="index.html" class="nav-back">&larr; Torna al sito</a>
+  </div>
+</nav>
+
+<div class="legal">
+  <h1>Privacy Policy</h1>
+  <p class="updated">Ultimo aggiornamento: 5 marzo 2026</p>
+
+  <div class="highlight">
+    <p><strong>In breve:</strong> raccogliamo solo i dati necessari per fornirti il servizio. Non vendiamo nulla a terzi. Puoi cancellare tutto in qualsiasi momento.</p>
+  </div>
+
+  <h2>1. Titolare del trattamento</h2>
+  <p>Il titolare del trattamento dei dati personali e Mentis Digital. Per qualsiasi richiesta relativa alla privacy, puoi scriverci a <a href="mailto:privacy@mentisdigital.com">privacy@mentisdigital.com</a>.</p>
+
+  <h2>2. Dati raccolti</h2>
+  <p>Raccogliamo i seguenti dati:</p>
+  <ul>
+    <li><strong>Dati di registrazione:</strong> nome, email, nome attivita, settore</li>
+    <li><strong>Contenuti:</strong> foto e testi che carichi per la generazione dei post</li>
+    <li><strong>Dati di utilizzo:</strong> log di accesso, pagine visitate, interazioni con la piattaforma</li>
+    <li><strong>Dati di pagamento:</strong> gestiti interamente da Stripe — non memorizziamo numeri di carta</li>
+  </ul>
+
+  <h2>3. Finalita del trattamento</h2>
+  <ul>
+    <li>Fornirti il servizio BotSocial (generazione e pubblicazione post)</li>
+    <li>Inviarti comunicazioni relative al servizio (aggiornamenti, scadenze, supporto)</li>
+    <li>Migliorare il prodotto tramite analisi aggregate e anonimizzate</li>
+  </ul>
+
+  <h2>4. Base giuridica</h2>
+  <p>Il trattamento si basa su: esecuzione del contratto (per l'erogazione del servizio), consenso (per comunicazioni marketing), e legittimo interesse (per miglioramenti del prodotto).</p>
+
+  <h2>5. Condivisione con terzi</h2>
+  <p>I tuoi dati possono essere condivisi esclusivamente con:</p>
+  <ul>
+    <li><strong>Stripe</strong> — per l'elaborazione dei pagamenti</li>
+    <li><strong>Provider di hosting</strong> — per l'infrastruttura tecnica</li>
+    <li><strong>API social media</strong> (Instagram, Facebook) — solo i contenuti che autorizzi a pubblicare</li>
+  </ul>
+  <p>Non vendiamo, affittiamo o cediamo i tuoi dati personali a terzi per scopi di marketing.</p>
+
+  <h2>6. Conservazione dei dati</h2>
+  <p>I tuoi dati vengono conservati per la durata del rapporto contrattuale e per i 12 mesi successivi alla cancellazione dell'account, salvo obblighi di legge.</p>
+
+  <h2>7. I tuoi diritti (GDPR)</h2>
+  <p>Hai diritto a:</p>
+  <ul>
+    <li>Accedere ai tuoi dati personali</li>
+    <li>Rettificare dati inesatti</li>
+    <li>Cancellare i tuoi dati ("diritto all'oblio")</li>
+    <li>Limitare o opporti al trattamento</li>
+    <li>Portabilita dei dati</li>
+    <li>Revocare il consenso in qualsiasi momento</li>
+  </ul>
+  <p>Per esercitare questi diritti, scrivi a <a href="mailto:privacy@mentisdigital.com">privacy@mentisdigital.com</a>.</p>
+
+  <h2>8. Cookie</h2>
+  <p>Utilizziamo solo cookie tecnici necessari al funzionamento del sito. Non utilizziamo cookie di profilazione o di terze parti per scopi pubblicitari.</p>
+
+  <h2>9. Modifiche</h2>
+  <p>Ci riserviamo di aggiornare questa policy. In caso di modifiche sostanziali, ti avviseremo via email.</p>
+</div>
+
+<footer>
+  <div class="footer-copy">&copy; 2026 BotSocial &mdash; Un prodotto <a href="https://capu98.github.io/mentis-digital/" target="_blank">Mentis Digital</a>. Tutti i diritti riservati.</div>
+</footer>
+
+</body>
+</html>
