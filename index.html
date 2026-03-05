@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BotSocial — Fai lavori bellissimi. È ora che li vedano tutti.</title>
 <meta name="description" content="BotSocial guarda il tuo rullino, prepara la caption nel tuo stile, pubblica per te. Per parrucchieri e saloni italiani. 14 giorni gratis, setup in 10 minuti.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -1272,7 +1273,7 @@ footer {
       <div style="background:#0f172a;border:1px solid #22c55e;border-radius:16px;padding:2rem;box-shadow:0 0 20px rgba(34,197,94,0.1);">
         <div style="font-size:2rem;margin-bottom:1rem;">🤖</div>
         <h3 style="color:#f1f5f9;font-size:1.2rem;font-weight:700;margin-bottom:0.5rem;">BotReady</h3>
-        <p style="color:#94a3b8;font-size:0.9rem;margin-bottom:1.25rem;">Chatbot AI per PMI — risponde ai clienti 24/7 su WhatsApp e Telegram</p>
+        <p style="color:#94a3b8;font-size:0.9rem;margin-bottom:1.25rem;">Assistente automatico per PMI — risponde ai clienti 24/7 su WhatsApp e Telegram</p>
         <span style="background:#166534;color:#86efac;font-size:0.75rem;font-weight:600;padding:0.25rem 0.75rem;border-radius:20px;">✅ Disponibile ora</span>
         <div style="margin-top:0.75rem;"><a href="https://capu98.github.io/botready/" target="_blank" style="color:#22c55e;font-size:0.85rem;font-weight:600;text-decoration:none;">Scopri BotReady →</a></div>
       </div>
@@ -1306,9 +1307,10 @@ footer {
       <li><a href="privacy.html">Privacy Policy</a></li>
       <li><a href="termini.html">Termini</a></li>
       <li><a href="cookie-policy.html">Cookie Policy</a></li>
+      <li><a href="javascript:void(0)" onclick="manageCookies()">Gestisci cookie</a></li>
     </ul>
   </div>
-  <div class="footer-copy">© 2026 BotSocial — Un prodotto <a href="https://capu98.github.io/mentis-digital/" target="_blank" style="color:var(--purple);text-decoration:none;font-weight:600">Mentis Digital</a>. Tutti i diritti riservati.</div>
+  <div class="footer-copy">© 2026 BotSocial. Tutti i diritti riservati. — Realizzato da <a href="https://capu98.github.io/mentis-digital/" target="_blank" style="color:var(--purple);text-decoration:none;font-weight:600">Mentis</a> · info@mentisdigital.it</div>
 </footer>
 
 <!-- ══════════ MODAL ══════════ -->
@@ -1317,8 +1319,9 @@ footer {
     <button class="modal-close" onclick="closeModal()">✕</button>
     <h3>Inizia i tuoi 14 giorni gratis</h3>
     <p class="modal-sub">Nessuna carta richiesta. Setup in 10 minuti. Cancelli quando vuoi.</p>
-    <form id="botsocial-form" action="https://formspree.io/f/xzdankag" method="POST">
+    <form id="botsocial-form" action="https://formspree.io/f/xzdankag" method="POST" onsubmit="handleSubmit(event)">
       <input type="hidden" name="_subject" value="Nuovo trial BotSocial">
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
       <div class="form-group">
         <label class="form-label">Il tuo nome</label>
         <input class="form-input" type="text" name="nome" placeholder="Alessia" required>
@@ -1330,6 +1333,10 @@ footer {
       <div class="form-group">
         <label class="form-label">Email o numero WhatsApp</label>
         <input class="form-input" type="text" name="contatto" placeholder="email@salone.it oppure 333 000 0000" required>
+      </div>
+      <div class="form-group" style="display:flex;align-items:flex-start;gap:10px;margin-top:12px;">
+        <input type="checkbox" id="privacy-check" required style="margin-top:3px;accent-color:var(--purple);min-width:18px;min-height:18px;">
+        <label for="privacy-check" style="font-size:12px;color:var(--muted);line-height:1.4;cursor:pointer;">Ho letto e accetto la <a href="privacy-policy.html" target="_blank" style="color:var(--purple);text-decoration:underline;">Privacy Policy</a></label>
       </div>
       <button type="submit" class="form-submit">Inizia gratis →</button>
     </form>
@@ -1363,6 +1370,38 @@ function toggleFaq(btn) {
   if (!isOpen) item.classList.add('open');
 }
 
+// Cookie banner
+function acceptCookies() {
+  localStorage.setItem('botsocial-cookies', 'accepted');
+  document.getElementById('cookie-banner').style.display = 'none';
+  // Activate Plausible after consent
+  const s = document.createElement('script');
+  s.defer = true;
+  s.dataset.domain = 'capu98.github.io';
+  s.src = 'https://plausible.io/js/script.js';
+  document.head.appendChild(s);
+}
+function rejectCookies() {
+  localStorage.setItem('botsocial-cookies', 'rejected');
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+function manageCookies() {
+  document.getElementById('cookie-banner').style.display = 'flex';
+}
+// Show banner if no choice made
+window.addEventListener('DOMContentLoaded', () => {
+  const choice = localStorage.getItem('botsocial-cookies');
+  if (!choice) {
+    document.getElementById('cookie-banner').style.display = 'flex';
+  } else if (choice === 'accepted') {
+    const s = document.createElement('script');
+    s.defer = true;
+    s.dataset.domain = 'capu98.github.io';
+    s.src = 'https://plausible.io/js/script.js';
+    document.head.appendChild(s);
+  }
+});
+
 function handleSubmit(e) {
   e.preventDefault();
   const form = document.getElementById('botsocial-form');
@@ -1383,6 +1422,15 @@ function handleSubmit(e) {
     .catch(() => { btn.textContent = 'Errore — riprova'; btn.disabled = false; });
 }
 </script>
+
+<!-- Cookie Banner -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(13,10,20,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:20px clamp(20px,5vw,80px);align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;">
+  <p style="font-size:14px;color:var(--text);margin:0;flex:1;min-width:260px;">Usiamo cookie tecnici e, con il tuo consenso, analytics per migliorare il servizio. <a href="cookie-policy.html" style="color:var(--purple);text-decoration:underline;">Cookie Policy</a></p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <button onclick="acceptCookies()" style="padding:10px 20px;background:var(--grad);color:#fff;border:none;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;">Accetta tutto</button>
+    <button onclick="rejectCookies()" style="padding:10px 20px;background:rgba(255,255,255,.07);color:var(--text);border:1px solid var(--border);border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;">Rifiuta tutto</button>
+  </div>
+</div>
 
 </body>
 </html>
