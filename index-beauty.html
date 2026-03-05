@@ -1136,7 +1136,7 @@ footer {
           <li>Fino a 10 account</li>
           <li>White-label (marchio tuo)</li>
           <li>Post illimitati</li>
-          <li>Dashboard multi-account</li>
+          <li>Pannello multi-account</li>
           <li>Report mensile</li>
           <li>Account manager dedicato</li>
         </ul>
@@ -1324,13 +1324,36 @@ function toggleFaq(btn) {
   if (!isOpen) item.classList.add('open');
 }
 
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
   const btn = e.target.querySelector('.form-submit');
-  btn.textContent = '✓ Ricevuto! Ti contattiamo entro 24h';
-  btn.style.background = '#1a7a4a';
+  btn.textContent = 'Invio in corso...';
   btn.disabled = true;
-  setTimeout(() => closeModal(), 2500);
+
+  const formData = new FormData(e.target);
+
+  try {
+    const res = await fetch('https://formspree.io/f/xzdankag', {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (res.ok) {
+      btn.textContent = '✓ Ricevuto! Ti contattiamo entro 24h';
+      btn.style.background = '#1a7a4a';
+      setTimeout(() => closeModal(), 2500);
+    } else {
+      throw new Error('Errore server');
+    }
+  } catch(err) {
+    const nome = formData.get('nome') || '';
+    const salone = formData.get('salone') || '';
+    const contatto = formData.get('contatto') || '';
+    window.location.href = `mailto:mentis.ai.outreach@gmail.com?subject=${encodeURIComponent('Trial BotSocial — ' + nome)}&body=${encodeURIComponent('Nome: ' + nome + '\nSalone: ' + salone + '\nContatto: ' + contatto)}`;
+    btn.disabled = false;
+    btn.textContent = 'Inizia gratis →';
+  }
 }
 </script>
 
