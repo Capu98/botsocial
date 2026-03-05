@@ -1278,8 +1278,8 @@ footer {
     <button class="modal-close" onclick="closeModal()">✕</button>
     <h3>Inizia i tuoi 14 giorni gratis</h3>
     <p class="modal-sub">Nessuna carta richiesta. Setup in 10 minuti. Cancelli quando vuoi.</p>
-    <form name="trial-botsocial" data-netlify="true" onsubmit="handleSubmit(event)">
-      <input type="hidden" name="form-name" value="trial-botsocial">
+    <form id="botsocial-form" action="https://formspree.io/f/xzdankag" method="POST">
+      <input type="hidden" name="_subject" value="Nuovo trial BotSocial">
       <div class="form-group">
         <label class="form-label">Il tuo nome</label>
         <input class="form-input" type="text" name="nome" placeholder="Alessia" required>
@@ -1326,11 +1326,22 @@ function toggleFaq(btn) {
 
 function handleSubmit(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('.form-submit');
-  btn.textContent = '✓ Ricevuto! Ti contattiamo entro 24h';
-  btn.style.background = '#1a7a4a';
+  const form = document.getElementById('botsocial-form');
+  const btn = form.querySelector('.form-submit');
+  btn.textContent = 'Invio in corso...';
   btn.disabled = true;
-  setTimeout(() => closeModal(), 2500);
+  fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+    .then(r => {
+      if (r.ok) {
+        btn.textContent = '✓ Ricevuto! Ti contattiamo entro 24h';
+        btn.style.background = '#1a7a4a';
+        setTimeout(() => closeModal(), 2500);
+      } else {
+        btn.textContent = 'Errore — riprova';
+        btn.disabled = false;
+      }
+    })
+    .catch(() => { btn.textContent = 'Errore — riprova'; btn.disabled = false; });
 }
 </script>
 
