@@ -40,7 +40,7 @@ img { max-width: 100%; }
 
 /* ── NAV ── */
 .nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  position: fixed; top: 44px; left: 0; right: 0; z-index: 1000;
   background: rgba(7,9,15,.92);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(30,22,48,.8);
@@ -95,7 +95,7 @@ img { max-width: 100%; }
 .hero {
   min-height: 100vh;
   display: flex; align-items: center;
-  padding: 100px clamp(20px, 5vw, 80px) 60px;
+  padding: 140px clamp(20px, 5vw, 80px) 60px;
   position: relative; overflow: hidden;
 }
 
@@ -841,9 +841,10 @@ footer {
   justify-content: center;
   gap: 14px;
   flex-wrap: wrap;
-  position: sticky;
-  top: 0;
-  z-index: 200;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1100;
+  height: 44px;
 }
 .cs-bar strong { font-weight: 800; letter-spacing: 0.03em; }
 .cs-bar a {
